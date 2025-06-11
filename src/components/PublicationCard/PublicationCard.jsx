@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Вспомогательная функция для безопасного вывода HTML
 function createMarkup(html) {
   return { __html: html };
 }
@@ -15,7 +14,6 @@ function PublicationCard({ publication }) {
     attributes
   } = publication;
 
-  // Теги
   const tags = [];
   if (attributes.isTechNews) tags.push('Технические новости');
   if (attributes.isAnnouncement) tags.push('Анонсы и события');
