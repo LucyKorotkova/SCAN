@@ -6,7 +6,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Проверяем токен при загрузке
     const token = localStorage.getItem('accessToken');
     if (token) {
       setUser({ token });
