@@ -33,7 +33,6 @@ function SearchForm() {
 
   const navigate = useNavigate();
 
-  // Валидация формы
   const validate = () => {
     const errs = {};
     if (!form.inn) errs.inn = 'ИНН обязателен';
@@ -53,7 +52,6 @@ function SearchForm() {
 
   const isValid = Object.keys(validate()).length === 0;
 
-  // Формирование тела запроса
   const makeRequestBody = () => ({
     issueDateInterval: {
       startDate: formatDateForApi(form.startDate),
@@ -90,7 +88,6 @@ function SearchForm() {
     histogramTypes: ['totalDocuments', 'riskFactors']
   });
 
-  // Обработка отправки формы
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errs = validate();
@@ -101,15 +98,10 @@ function SearchForm() {
     setPublications([]);
     setPubIds([]);
     try {
-      // 1. Получаем сводку
       const summaryData = await fetchHistograms(makeRequestBody());
       setSummary(summaryData.data);
-
-      // 2. Получаем ID публикаций
       const pubData = await fetchPublicationIds(makeRequestBody());
       setPubIds(pubData.items.map(item => item.encodedId));
-
-      // 3. Загружаем первые 10 публикаций
       if (pubData.items.length > 0) {
         const docs = await fetchDocuments(pubData.items.slice(0, 10));
         setPublications(docs.filter(d => d.ok).map(d => d.ok));
@@ -123,7 +115,6 @@ function SearchForm() {
     }
   };
 
-  // Загрузка следующих 10 публикаций
   const handleShowMore = async () => {
     const nextIds = pubIds.slice(publications.length, publications.length + 10);
     const docs = await fetchDocuments(nextIds);
